@@ -7,15 +7,10 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: padel_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   backend:
     build: ./backend
@@ -26,17 +21,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-      - redis
-
-  frontend:
-    build: ./frontend
-    command: npm start
-    volumes:
-      - ./frontend:/app
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
 
 volumes:
   postgres_data:
